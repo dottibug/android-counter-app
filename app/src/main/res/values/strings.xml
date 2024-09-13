@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Counter</string>
+    <string name="counterIconDescription">An icon with an add symbol to represent counting.</string>
+    <string name="placeholderNumber">0</string>
+    <string name="numberHint">Enter a number</string>
+    <string name="buttonText">Submit</string>
+    <string name="randomButtonText">Start With a Random Number</string>
+    <string name="buttonDecrease">-</string>
+    <string name="buttonIncrease">+</string>
+    <string name="placeholderInterval">interval</string>
+    <string name="placeholderSummary">Current operation will be shown here</string>
+    <string name="summary">%1$s %2$s %3$s = %4$s</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#2e3532</color>
+    <color name="greenLight">#902e3532</color>
+    <color name="alabaster">#e0e2db</color>
+    <color name="amethyst">#7D70BA</color>
+</resources>
