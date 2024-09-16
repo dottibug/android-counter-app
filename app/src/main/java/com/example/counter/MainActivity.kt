@@ -3,22 +3,16 @@ package com.example.counter
 import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.counter.databinding.ActivityMainBinding
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var numberText : TextView;
-    private lateinit var numberEdit : EditText;
-    private lateinit var interval : EditText;
-    private lateinit var summary : TextView;
-
+    private lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,20 +24,12 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // Button references
-        val buttonSubmit : Button = findViewById(R.id.mainButtonSubmit);
-        val buttonRandomNumber : Button = findViewById(R.id.mainButtonRandomNumber);
-        val buttonIncrease : Button = findViewById(R.id.mainButtonInc);
-        val buttonDecrease: Button = findViewById(R.id.mainButtonDec);
-
-        // Define EditText and TextView references
-        numberText = findViewById(R.id.mainTextViewNumber);
-        numberEdit = findViewById(R.id.mainEditTextNumberInput);
-        interval = findViewById(R.id.mainEditTextInterval);
-        summary = findViewById(R.id.mainTextViewSummary);
+        // View binding
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Get and display number inputted by user
-        buttonSubmit.setOnClickListener {
+        binding.mainButtonSubmit.setOnClickListener {
             val number = getNumberInput();
             resetViews();
             hideKeyboard();
@@ -51,21 +37,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Get and display a random number, then clear numberEdit
-        buttonRandomNumber.setOnClickListener {
+        binding.mainButtonRandomNumber.setOnClickListener {
             val number = getRandomNumber();
             resetViews();
             displayNumber(number);
         }
 
         // Increase the current number by an interval
-        buttonIncrease.setOnClickListener {
+        binding.mainButtonInc.setOnClickListener {
             val increment = getIntervalNumber();
             updateNumber("+", increment);
             hideKeyboard();
         }
 
         // Decrease the current number by an interval
-        buttonDecrease.setOnClickListener {
+        binding.mainButtonDec.setOnClickListener {
             val decrement = getIntervalNumber();
             updateNumber("-", decrement);
             hideKeyboard();
@@ -73,61 +59,59 @@ class MainActivity : AppCompatActivity() {
 
         // Check for savedInstanceState
         if (savedInstanceState != null) {
-            numberText.text = savedInstanceState.getString("numberText")
-            numberEdit.setText(savedInstanceState.getString("numberEdit"))
-            interval.setText(savedInstanceState.getString("interval"))
+            binding.mainTextViewNumber.text = savedInstanceState.getString("numberText")
+            binding.mainEditTextNumberInput.setText(savedInstanceState.getString("numberEdit"))
+            binding.mainEditTextInterval.setText(savedInstanceState.getString("interval"))
         }
     }
 
     // Override onSaveInstanceState to save current data
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("numberText", numberText.text.toString())
-        outState.putString("numberEdit", numberEdit.text.toString())
-        outState.putString("interval", interval.text.toString())
+        outState.putString("numberText", binding.mainTextViewNumber.text.toString())
+        outState.putString("numberEdit", binding.mainEditTextNumberInput.text.toString())
+        outState.putString("interval", binding.mainEditTextInterval.text.toString())
     }
-
-    // Add onSaveInstanceState override to persist data on screen rotations
 
     // Get number from input
     private fun getNumberInput() : String {
-        if (numberEdit.text.toString().isEmpty()) {
+        if (binding.mainEditTextNumberInput.text.toString().isEmpty()) {
             // Show a toast message if the number input is empty
             Toast.makeText(baseContext, "Enter a number", Toast.LENGTH_SHORT).show();
             // Return the current value of numberText
-            return numberText.text.toString()
+            return binding.mainTextViewNumber.text.toString()
         } else {
             // Return the inputted number
-            return numberEdit.text.toString();
+            return binding.mainEditTextNumberInput.text.toString();
         }
     }
 
     private fun resetViews() {
         clearNumberEdit();
         clearInterval();
-        summary.text = resources.getString(R.string.placeholderSummary);
+        binding.mainTextViewSummary.text = resources.getString(R.string.placeholderSummary);
     }
 
     // Hide keyboard
     private fun hideKeyboard() {
         // Get service from context and cast as InputMethodManager type
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager;
-        inputManager.hideSoftInputFromWindow(numberText.windowToken, 0);
+        inputManager.hideSoftInputFromWindow(binding.mainTextViewNumber.windowToken, 0);
     }
 
     // Display number in the numberText view
     private fun displayNumber(number : String) {
-        numberText.text = number;
+        binding.mainTextViewNumber.text = number;
     }
 
     // Clear numberEdit
     private fun clearNumberEdit() {
-        numberEdit.setText("");
+        binding.mainEditTextNumberInput.setText("");
     }
 
     // Clear interval EditText view
     private fun clearInterval() {
-        interval.setText("");
+        binding.mainEditTextInterval.setText("");
     }
 
     // Get random number from -100 to 100 as a string
@@ -137,10 +121,10 @@ class MainActivity : AppCompatActivity() {
 
     // Get the interval number
     private fun getIntervalNumber() : Int {
-        return if (interval.text.toString().isEmpty()) {
+        return if (binding.mainEditTextInterval.text.toString().isEmpty()) {
             0
         } else {
-            interval.text.toString().toInt();
+            binding.mainEditTextInterval.text.toString().toInt();
         }
     }
 
@@ -154,7 +138,7 @@ class MainActivity : AppCompatActivity() {
 
     // Get current number
     private fun getCurrentNumber() : Int {
-        return numberText.text.toString().toInt();
+        return binding.mainTextViewNumber.text.toString().toInt();
     }
 
     // Update summary
@@ -162,6 +146,6 @@ class MainActivity : AppCompatActivity() {
         val curNum = currentNumber.toString();
         val intAmt = intervalAmount.toString();
         val newNum = newNumber.toString();
-        summary.text = String.format(resources.getString(R.string.summary), curNum, type, intAmt, newNum);
+        binding.mainTextViewSummary.text = String.format(resources.getString(R.string.summary), curNum, type, intAmt, newNum);
     }
 }
