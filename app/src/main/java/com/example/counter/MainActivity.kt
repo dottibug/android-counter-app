@@ -70,7 +70,24 @@ class MainActivity : AppCompatActivity() {
             updateNumber("-", decrement);
             hideKeyboard();
         }
+
+        // Check for savedInstanceState
+        if (savedInstanceState != null) {
+            numberText.text = savedInstanceState.getString("numberText")
+            numberEdit.setText(savedInstanceState.getString("numberEdit"))
+            interval.setText(savedInstanceState.getString("interval"))
+        }
     }
+
+    // Override onSaveInstanceState to save current data
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("numberText", numberText.text.toString())
+        outState.putString("numberEdit", numberEdit.text.toString())
+        outState.putString("interval", interval.text.toString())
+    }
+
+    // Add onSaveInstanceState override to persist data on screen rotations
 
     // Get number from input
     private fun getNumberInput() : String {
